@@ -1,27 +1,25 @@
-import React, { Fragment } from 'react';
-import { Provider } from 'react-redux'
+import React from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import configureStore from '../../redux/store/configureStore.js';
 
-// Provider store=""
-// Fragment ?
-// BrowserRouter as Router
-// Switch
-// Route
 import './App.scss'
+
+import palettes from '../../test/mockData.js'
+
+import { ColorPalette } from '../'
 
 const store = configureStore();
 
 function App() {
   return (
       <Provider store={store}>
-          <Fragment>
-              <Router>
-                  <Switch>
-                      <Route to="/" render={() => <div className="alert">Hello</div>} />
-                  </Switch>
-              </Router>
-          </Fragment>
+          <Router>
+              <Switch>
+                  <Route exact path="/" render={() => <div className="alert">Hello</div>} />
+                  <Route exact path="/color-pallet/" render={() => <ColorPalette {...palettes[0]} />} />
+              </Switch>
+          </Router>
       </Provider>
   );
 }

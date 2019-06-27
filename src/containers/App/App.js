@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import configureStore from '../../redux/store/configureStore.js';
 
-import './App.scss'
+import '../../utils/styles/global.scss'
 
 import palettes from '../../test/mockData.js'
 

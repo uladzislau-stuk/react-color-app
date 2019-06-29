@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import 'rc-slider/assets/index.css'
 import './ColorPalette.scss'
-import Slider from 'rc-slider'
-import { Palette } from '../../components/pages/ColorPalette'
-
+import { Palette, NavBar } from '../../components/pages/ColorPalette'
 
 class ColorPalette extends Component {
 	constructor(props) {
@@ -14,7 +11,7 @@ class ColorPalette extends Component {
 		}
 	}
 
-	changeLevel = (level) => {
+	handleChangeLevel = (level) => {
 		this.setState({ level })
 	}
 
@@ -24,16 +21,10 @@ class ColorPalette extends Component {
 
 		return (
 			<div className="ColorPalette">
-				<div className="slider">
-					<Slider
-						className="slider"
-						min={100}
-						max={900}
-						step={100}
-						onChange={this.changeLevel}
-						defaultValue={this.state.level}
-					/>
-				</div>
+				<NavBar
+					level={level}
+					changeLevel={this.handleChangeLevel}
+				/>
 				<Palette
 					colors={colors}
 					level={level}

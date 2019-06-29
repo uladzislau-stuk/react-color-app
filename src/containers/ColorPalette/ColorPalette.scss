@@ -1,33 +1,3 @@
 .ColorPalette {
 	height: 100vh;
 }
-
-.slider {
-    width: 340px;
-    margin: 0 10px;
-    display: inline-block;
-}
-
-.rc-slider {
-
-    &-track {
-        background-color: transparent;
-    }
-
-    &-rail {
-        height: 8px;
-    }
-
-    &-handle,
-    &-handle:active,
-    &-handle:focus,
-    &-handle:hover {
-        background-color: green;
-        outline: none;
-        border: 2px solid green;
-        box-shadow: none;
-        width: 13px;
-        height: 13px;
-        margin-top: -3px;
-    }
-}

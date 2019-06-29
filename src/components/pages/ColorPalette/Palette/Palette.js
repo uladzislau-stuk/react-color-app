@@ -5,7 +5,7 @@ import './Palette.scss'
 
 class Palette extends Component {
 	render() {
-		const { colors, level } = this.props;
+		const { colors, level, format } = this.props;
 
 		return (
 			<div className="Palette">
@@ -13,7 +13,7 @@ class Palette extends Component {
 					<ColorBox
 						key={uuid()}
 						name={color.name}
-						color={color.hex}
+						color={color[format]}
 					/>
 				))}
 			</div>

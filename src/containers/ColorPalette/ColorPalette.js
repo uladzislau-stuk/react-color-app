@@ -7,27 +7,32 @@ class ColorPalette extends Component {
 		super(props)
 
 		this.state = {
-			level: 500
+			level: 500,
+			format: 'hex'
 		}
 	}
-
 	handleChangeLevel = (level) => {
 		this.setState({ level })
 	}
-
+	handleChangeFormat = (evt) => {
+		this.setState({ [evt.target.name]: evt.target.value })
+	}
 	render() {
-		const { level } = this.state
+		const { level, format } = this.state
 		const { colors } = this.props
 
 		return (
 			<div className="ColorPalette">
 				<NavBar
 					level={level}
+					format={format}
 					changeLevel={this.handleChangeLevel}
+					changeFormat={this.handleChangeFormat}
 				/>
 				<Palette
 					colors={colors}
 					level={level}
+					format={format}
 				/>
 			</div>
 		);

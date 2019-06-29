@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import 'rc-slider/assets/index.css'
 import './ColorPalette.scss'
 import Slider from 'rc-slider'
 import { Palette } from '../../components/pages/ColorPalette'
 
-import 'rc-slider/assets/index.css'
 
 class ColorPalette extends Component {
 	constructor(props) {
@@ -24,13 +24,16 @@ class ColorPalette extends Component {
 
 		return (
 			<div className="ColorPalette">
-				<Slider
-					min={100}
-					max={900}
-					step={100}
-					onChange={this.changeLevel}
-					defaultValue={this.state.level}
-				/>
+				<div className="slider">
+					<Slider
+						className="slider"
+						min={100}
+						max={900}
+						step={100}
+						onChange={this.changeLevel}
+						defaultValue={this.state.level}
+					/>
+				</div>
 				<Palette
 					colors={colors}
 					level={level}

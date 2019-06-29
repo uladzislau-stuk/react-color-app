@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import uuid from 'uuid/v4'
-import './Palette.scss'
-
 import { ColorBox } from '../'
+import './Palette.scss'
 
 class Palette extends Component {
 	render() {
-		const { colors } = this.props;
+		const { colors, level } = this.props;
 
 		return (
 			<div className="Palette">
-				{colors.map((color) => (
+				{colors[level].map((color) => (
 					<ColorBox
 						key={uuid()}
-						{...color}
+						name={color.name}
+						color={color.hex}
 					/>
 				))}
 			</div>

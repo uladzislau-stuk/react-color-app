@@ -14,14 +14,24 @@ import '../../utils/styles/global.scss'
 const store = configureStore();
 
 function App() {
-  const palette = generatePalette(palettes[0]);
+  const findPalette = id => (
+  	palettes.find(palette => (
+  		palette.id === id
+	))
+  )
 
   return (
       <Provider store={store}>
           <Router>
               <Switch>
                   <Route exact path="/" render={() => <div className="alert">Hello</div>} />
-                  <Route exact path="/color-pallet/" render={() => <ColorPalette {...palette} />} />
+                  <Route
+					  exact
+					  path="/palette/:id"
+					  render={routeProps => (
+						  <ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
+					  )}
+				  />
               </Switch>
           </Router>
       </Provider>

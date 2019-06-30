@@ -8,17 +8,28 @@ class ColorPalette extends Component {
 
 		this.state = {
 			level: 500,
-			format: 'hex'
+			format: 'hex',
+			showNotification: false
 		}
 	}
 	handleChangeLevel = (level) => {
 		this.setState({ level })
 	}
 	handleChangeFormat = (evt) => {
-		this.setState({ [evt.target.name]: evt.target.value })
+		let target = evt.target
+
+		this.setState({
+			[target.name]: target.value,
+			showNotification: this.state.format !== target.value
+		})
+	}
+	handleCloseNotification = () => {
+		this.setState({
+			showNotification: false
+		})
 	}
 	render() {
-		const { level, format } = this.state
+		const { level, format, showNotification } = this.state
 		const { colors } = this.props
 
 		return (
@@ -28,6 +39,8 @@ class ColorPalette extends Component {
 					format={format}
 					changeLevel={this.handleChangeLevel}
 					changeFormat={this.handleChangeFormat}
+					showNotification={showNotification}
+					closeNotification={this.handleCloseNotification}
 				/>
 				<Palette
 					colors={colors}

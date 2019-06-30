@@ -1,13 +1,25 @@
 import React, { Component } from 'react'
 import Slider from 'rc-slider'
 import Select from '@material-ui/core/Select'
+import Snackbar from '@material-ui/core/Snackbar'
 import MenuItem from '@material-ui/core/MenuItem'
+import IconButton from '@material-ui/core/IconButton'
+
+import CloseIcon from '@material-ui/icons/Close'
+
 import 'rc-slider/assets/index.css'
 import './NavBar.scss'
 
 class NavBar extends Component {
 	render() {
-		const { level, format, changeLevel, changeFormat } = this.props
+		const {
+			level,
+			format,
+			showNotification,
+			changeLevel,
+			changeFormat,
+			closeNotification
+		} = this.props
 
 		return (
 			<div className="NavBar">
@@ -30,6 +42,31 @@ class NavBar extends Component {
 					</div>
 				</div>
 				<div className="select">
+					<Snackbar
+						anchorOrigin={{
+							vertical: 'bottom',
+							horizontal: 'left',
+						}}
+						open={showNotification}
+						autoHideDuration={4000}
+						onClose={closeNotification}
+						ContentProps={{
+							'aria-describedby': 'format-notification-id',
+						}}
+						message={
+							<span id="format-notification-id">Format Changed to {format.toUpperCase()}</span>
+						}
+						action={[
+							<IconButton
+								key="close"
+								aria-label="Close"
+								color="inherit"
+								onClick={closeNotification}
+							>
+								<CloseIcon />
+							</IconButton>,
+						]}
+					/>
 					<Select
 						onChange={changeFormat}
 						value={format}

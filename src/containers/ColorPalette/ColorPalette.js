@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './ColorPalette.scss'
 import { Palette, NavBar } from '../../components/pages/ColorPalette'
+import './ColorPalette.scss'
 
 class ColorPalette extends Component {
 	constructor(props) {

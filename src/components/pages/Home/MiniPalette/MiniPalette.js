@@ -8,10 +8,7 @@ const styles = {
 		borderRadius: "5px",
 		padding: "5px",
 		position: "relative",
-		overflow: "hidden",
-		"& hover": {
-			cursor: "pointer"
-		}
+		overflow: "hidden"
 	},
 	colors: {
 		backgroundColor: "grey"
@@ -38,7 +35,7 @@ const MiniPalette = (props) => {
 	return (
 		<NavLink
 			to={`/palette/${id}`}
-			activeClassName={classes.root}
+			className={classes.root}
 		>
 			<div className={classes.colors} />
 			<h5 className={classes.title}>

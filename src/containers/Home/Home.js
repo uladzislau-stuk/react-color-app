@@ -1,16 +1,45 @@
 import React, { Component } from 'react'
-import { PaletteList } from "../../components/pages/Home"
+import { PaletteList } from '../../components/pages/Home'
+import { withStyles } from '@material-ui/styles'
+
 import './Home.scss'
+
+const styles = {
+	root: {
+		display: "flex",
+		justifyContent: "center",
+		height: "100%",
+		backgroundColor: "blue"
+	},
+	container: {
+		display: "flex",
+		flexDirection: "column",
+		flexWrap: "wrap",
+		width: "50%",
+		border: "1px solid white"
+	},
+	nav: {
+		display: "flex",
+		justifyContent: "space-between",
+		width: "100%"
+	}
+}
 
 class Home extends Component {
 	render() {
+		const { classes } = this.props
+
 		return (
-			<div className="Home">
-				<h1>React Colors</h1>
-				<PaletteList {...this.props} />
+			<div className={classes.root}>
+				<div className={classes.container}>
+					<nav className={classes.nav}>
+						<h1>React Colors</h1>
+					</nav>
+					<PaletteList {...this.props} />
+				</div>
 			</div>
 		)
 	}
 }
 
-export default Home
+export default withStyles(styles)(Home)

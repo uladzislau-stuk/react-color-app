@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import { NavLink } from 'react-router-dom'
+import React, {Component} from 'react'
 import { MiniPalette } from '../'
 import uuid from 'uuid/v4'
 import './PaletteList.scss'
@@ -10,16 +9,11 @@ class PaletteList extends Component {
 
 		return (
 			<div className="PaletteList">
-				<MiniPalette />
 				{palettes.map(palette => (
-					<p key={uuid()}>
-						<NavLink
-							to={`/palette/${palette.id}`}
-							activeClassName="PaletteList-item"
-						>
-							{palette.paletteName}
-						</NavLink>
-					</p>
+					<MiniPalette
+						key={uuid()}
+						{...palette}
+					/>
 				))}
 			</div>
 		);

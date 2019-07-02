@@ -8,15 +8,14 @@ const styles = {
 	root: {
 		display: "flex",
 		justifyContent: "center",
-		height: "100%",
+		height: "100vh",
 		backgroundColor: "blue"
 	},
 	container: {
 		display: "flex",
 		flexDirection: "column",
 		flexWrap: "wrap",
-		width: "50%",
-		border: "1px solid white"
+		width: "50%"
 	},
 	nav: {
 		display: "flex",

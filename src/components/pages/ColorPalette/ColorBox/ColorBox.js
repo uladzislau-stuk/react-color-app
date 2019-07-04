@@ -21,12 +21,13 @@ class ColorBox extends Component {
 	};
 
 	render() {
-		const { id, name, format: background, location } = this.props;
-		const { copied } = this.state;
+		const { id, name, format: background, location, match } = this.props
+		const { copied } = this.state
+		const isColorPalettePage = match.params.id && !match.params.colorId
 
 		return (
 			<CopyToClipboard text={background} onCopy={this.copy}>
-				<div style={{background}} className="ColorBox">
+				<div style={{background}} className={`ColorBox${isColorPalettePage ? " size-s" : " size-l"}`}>
 					<div style={{background}} className={`copy-overlay${copied ? " show": ""}`} />
 					<div className={`copy-msg${copied ? " show" : ""}`}>
 						<div>Copied!!!</div>
@@ -36,14 +37,16 @@ class ColorBox extends Component {
 						<button className="copy-btn">Copy</button>
 						<span className="copy-color">{this.toUpperCaseFirst(name)}</span>
 					</div>
-					<Link
-						to={`${location.pathname}/${id}`}
-						className="see-more"
-						onClick={e => e.stopPropagation()}
-					>More</Link>
+					{isColorPalettePage && (
+						<Link
+							to={`${location.pathname}/${id}`}
+							className="see-more"
+							onClick={e => e.stopPropagation()}
+						>More</Link>
+					)}
 				</div>
 			</CopyToClipboard>
-		);
+		)
 	}
 }
 

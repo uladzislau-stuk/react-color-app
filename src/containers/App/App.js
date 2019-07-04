@@ -40,9 +40,9 @@ function App() {
 				  />
 				  <Route
 					  exact
-					  path="/palette/:paletteId/:colorId"
-					  render={() => (
-						  <h1>Hello world!</h1>
+					  path="/palette/:id/:colorId"
+					  render={routeProps => (
+						  <ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
 					  )}
 				  />
               </Switch>

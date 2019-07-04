@@ -1,11 +1,20 @@
 .ColorBox {
 	display: inline-block;
 	width: 20%;
-	height: 25%;
 	position: relative;
 	cursor: pointer;
 	text-align: center;
 	margin-bottom: -4px;
+
+	&.size {
+		&-s {
+			height: 25%;
+		}
+
+		&-l {
+			height: 50%;
+		}
+	}
 }
 
 .copy {

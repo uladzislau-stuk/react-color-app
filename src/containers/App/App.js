@@ -38,6 +38,13 @@ function App() {
 						  <ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
 					  )}
 				  />
+				  <Route
+					  exact
+					  path="/palette/:paletteId/:colorId"
+					  render={() => (
+						  <h1>Hello world!</h1>
+					  )}
+				  />
               </Switch>
           </Router>
       </Provider>

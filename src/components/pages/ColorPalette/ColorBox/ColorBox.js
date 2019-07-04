@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ColorBox.scss'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { Link, withRouter } from 'react-router-dom'
 
 class ColorBox extends Component {
 	constructor(props) {
@@ -20,7 +21,7 @@ class ColorBox extends Component {
 	};
 
 	render() {
-		const { name, color: background } = this.props;
+		const { id, name, format: background, location } = this.props;
 		const { copied } = this.state;
 
 		return (
@@ -35,7 +36,11 @@ class ColorBox extends Component {
 						<button className="copy-btn">Copy</button>
 						<span className="copy-color">{this.toUpperCaseFirst(name)}</span>
 					</div>
-					<span className="see-more">More</span>
+					<Link
+						to={`${location.pathname}/${id}`}
+						className="see-more"
+						onClick={e => e.stopPropagation()}
+					>More</Link>
 				</div>
 			</CopyToClipboard>
 		);
@@ -44,7 +49,7 @@ class ColorBox extends Component {
 
 ColorBox.propTypes = {
 	name: PropTypes.string.isRequired,
-	color: PropTypes.string.isRequired
+	format: PropTypes.string.isRequired
 };
 
-export default ColorBox;
+export default withRouter(ColorBox);

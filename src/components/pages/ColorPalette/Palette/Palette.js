@@ -12,8 +12,9 @@ class Palette extends Component {
 				{colors[level].map((color) => (
 					<ColorBox
 						key={uuid()}
+						id={color.id}
 						name={color.name}
-						color={color[format]}
+						format={color[format]}
 					/>
 				))}
 			</div>

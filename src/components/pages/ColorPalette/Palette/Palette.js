@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import uuid from 'uuid/v4'
-import { ColorBox } from '../'
+import { ColorBox, GoBackBox } from '../'
 import { withRouter } from 'react-router-dom'
 import './Palette.scss'
 
@@ -16,7 +16,7 @@ class Palette extends Component {
 	}
 
 	render() {
-		const { colors, level, format, match } = this.props;
+		const { colors, level, format, paletteId, match } = this.props;
 		const isColorPalettePage = match.params.id && !match.params.colorId
 		const colorBoxes = isColorPalettePage ? colors[level] : this.getShades(colors, match.params.colorId)
 
@@ -30,6 +30,9 @@ class Palette extends Component {
 						format={color[format]}
 					/>
 				))}
+				{!isColorPalettePage &&
+					<GoBackBox prevUrl={`/palette/${paletteId}`} />
+				}
 			</div>
 		);
 	}

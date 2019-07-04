@@ -1,0 +1,32 @@
+.GoBackBox {
+	display: inline-block;
+	width: 20%;
+	height: 50%;
+	position: relative;
+	cursor: pointer;
+	text-align: center;
+	margin-bottom: -4px;
+	background-color: black;
+
+	&-btn {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		cursor: pointer;
+		width: 100px;
+		height: 30px;
+		line-height: 30px;
+		color: white;
+		text-transform: uppercase;
+		background-color: transparent;
+		transition: .5s;
+		outline: none;
+		border: 2px solid white;
+	}
+
+	&:hover &-btn {
+		color: black;
+		background-color: white;
+	}
+}

@@ -30,7 +30,7 @@ class ColorPalette extends Component {
 	}
 	render() {
 		const { level, format, showNotification } = this.state
-		const { colors, paletteName, emoji } = this.props
+		const { colors, id, paletteName, emoji } = this.props
 
 		return (
 			<div className="ColorPalette">
@@ -46,6 +46,7 @@ class ColorPalette extends Component {
 					colors={colors}
 					level={level}
 					format={format}
+					paletteId={id}
 				/>
 				<footer>
 					{paletteName}

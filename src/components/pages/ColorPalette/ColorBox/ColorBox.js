@@ -33,9 +33,9 @@ class ColorBox extends Component {
 					</div>
 					<div className="copy">
 						<button className="copy-btn">Copy</button>
+						<span className="copy-color">{this.toUpperCaseFirst(name)}</span>
 					</div>
 					<span className="see-more">More</span>
-					<span className="color-name">{this.toUpperCaseFirst(name)}</span>
 				</div>
 			</CopyToClipboard>
 		);

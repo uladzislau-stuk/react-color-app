@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ColorBox.scss'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import chroma from 'chroma-js'
 import { Link, withRouter } from 'react-router-dom'
 
 class ColorBox extends Component {
@@ -23,24 +24,32 @@ class ColorBox extends Component {
 	render() {
 		const { id, name, format: background, location, match } = this.props
 		const { copied } = this.state
+
 		const isColorPalettePage = match.params.id && !match.params.colorId
+		const isDarkColor = chroma(background).luminance() <= 0.3
+
+		const textColorClass = ` text-${isDarkColor ? 'white' : 'black'}`
+		const textShadowClass = ` text-${isDarkColor ? 'shadow-black' : 'shadow-grey'}`
+		const bgColorClass = ` bg-${isDarkColor ? 'grey' : 'white'}`
+		const boxSizeClass = ` size${isColorPalettePage ? "-s" : "-l"}`
+		const shouldAddShowClass = copied ? ' show' : ''
 
 		return (
 			<CopyToClipboard text={background} onCopy={this.copy}>
-				<div style={{background}} className={`ColorBox${isColorPalettePage ? " size-s" : " size-l"}`}>
-					<div style={{background}} className={`copy-overlay${copied ? " show": ""}`} />
-					<div className={`copy-msg${copied ? " show" : ""}`}>
-						<div>Copied!!!</div>
-						<div>{background}</div>
+				<div style={{background}} className={`ColorBox${boxSizeClass}`}>
+					<div style={{background}} className={`copy-overlay${shouldAddShowClass}`} />
+					<div className={`copy-msg${shouldAddShowClass}`}>
+						<div className={`${textColorClass}${textShadowClass}`}>Copied!!!</div>
+						<div className={`${textColorClass}`}>{background}</div>
 					</div>
 					<div className="copy">
-						<button className="copy-btn">Copy</button>
-						<span className="copy-color">{this.toUpperCaseFirst(name)}</span>
+						<button className={`copy-btn${textColorClass}${bgColorClass}`}>Copy</button>
+						<span className={`copy-color${textColorClass}`}>{this.toUpperCaseFirst(name)}</span>
 					</div>
 					{isColorPalettePage && (
 						<Link
 							to={`${location.pathname}/${id}`}
-							className="see-more"
+							className={`see-more${textColorClass}${bgColorClass}`}
 							onClick={e => e.stopPropagation()}
 						>More</Link>
 					)}

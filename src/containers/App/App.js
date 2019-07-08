@@ -5,7 +5,7 @@ import configureStore from '../../redux/store/configureStore.js';
 
 import generatePalette from '../../helpers/colorHelper.js'
 
-import { ColorPalette, Home, NotFound } from '../'
+import { ColorPalette, Home, NotFound, NewPalette } from '../'
 
 import palettes from '../../test/mockData.js'
 
@@ -24,6 +24,20 @@ function App() {
       <Provider store={store}>
           <Router>
               <Switch>
+				  <Route
+					  exact
+					  path="/palette/new"
+					  render={() =>
+						  <NewPalette />
+					  }
+				  />
+				  <Route
+					  exact
+					  path="/"
+					  render={() =>
+						  <Home palettes={palettes} />
+					  }
+				  />
                   <Route
 					  exact
 					  path="/"

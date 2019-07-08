@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { PaletteList } from '../../components/pages/Home'
 import { withStyles } from '@material-ui/styles'
+import { Link } from 'react-router-dom'
 
 import './Home.scss'
 
@@ -20,7 +21,16 @@ const styles = {
 	nav: {
 		display: "flex",
 		justifyContent: "space-between",
-		width: "100%"
+		alignItems: "center",
+		width: "100%",
+
+		"& a": {
+			color: "white",
+
+			"&:hover": {
+				textDecoration: "underline"
+			}
+		}
 	}
 }
 
@@ -33,6 +43,7 @@ class Home extends Component {
 				<div className={classes.container}>
 					<nav className={classes.nav}>
 						<h1>React Colors</h1>
+						<Link to='/palette/new'>Create Palette</Link>
 					</nav>
 					<PaletteList {...this.props} />
 				</div>

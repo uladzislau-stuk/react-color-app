@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import withStyles from "@material-ui/core/styles/withStyles"
+import { DraggableColorBox } from "../../components/pages/NewPalette"
 import uuid from 'uuid/v4'
 import clsx from 'clsx'
 import Drawer from '@material-ui/core/Drawer'
@@ -57,6 +58,7 @@ const styles = theme => ({
 	},
 	content: {
 		flexGrow: 1,
+		height: "calc(100vh - 64px)",
 		padding: theme.spacing(3),
 		transition: theme.transitions.create('margin', {
 			easing: theme.transitions.easing.sharp,
@@ -77,7 +79,7 @@ class NewPalette extends Component {
 	state = {
 		open: false,
 		color: 'purple',
-		colors: ['1', '2']
+		colors: ['#7f547f', '#565656']
 	}
 
 	handleDrawerOpen = () => this.setState({open: true})
@@ -158,7 +160,12 @@ class NewPalette extends Component {
 					})}
 				>
 					<div className={classes.drawerHeader} />
-					<ul>{colors.map(color => <li key={uuid()}>{color}</li>)}</ul>
+					{colors.map(color => (
+						<DraggableColorBox
+							key={uuid()}
+							color={color}
+						/>
+					))}
 				</main>
 			</div>
 		)

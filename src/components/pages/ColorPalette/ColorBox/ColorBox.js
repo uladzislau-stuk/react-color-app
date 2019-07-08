@@ -29,7 +29,7 @@ class ColorBox extends Component {
 		const isDarkColor = chroma(background).luminance() <= 0.3
 
 		const textColorClass = ` text-${isDarkColor ? 'white' : 'black'}`
-		const textShadowClass = ` text-${isDarkColor ? 'shadow-black' : 'shadow-grey'}`
+		const textShadowClass = ` text-shadow-${isDarkColor ? 'black' : 'grey'}`
 		const bgColorClass = ` bg-${isDarkColor ? 'grey' : 'white'}`
 		const boxSizeClass = ` size${isColorPalettePage ? "-s" : "-l"}`
 		const shouldAddShowClass = copied ? ' show' : ''

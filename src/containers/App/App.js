@@ -5,7 +5,7 @@ import configureStore from '../../redux/store/configureStore.js';
 
 import generatePalette from '../../helpers/colorHelper.js'
 
-import { ColorPalette, Home } from '../'
+import { ColorPalette, Home, NotFound } from '../'
 
 import palettes from '../../test/mockData.js'
 
@@ -45,6 +45,7 @@ function App() {
 						  <ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
 					  )}
 				  />
+				  <Route render={NotFound} />
               </Switch>
           </Router>
       </Provider>

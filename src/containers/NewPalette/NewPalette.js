@@ -79,11 +79,11 @@ const styles = theme => ({
 class NewPalette extends Component {
 	state = {
 		open: true,
-		color: '#315CA0',
+		newColorHex: '#315CA0',
 		newColorName: '',
-		prevColorName: '',
 		colors: []
 	}
+
 	ruleIsColorNameUnique = 'isColorNameUnique'
 	ruleIsColorUnique = 'isColorUnique'
 
@@ -94,33 +94,33 @@ class NewPalette extends Component {
 		ValidatorForm.removeValidationRule(this.ruleIsColorUnique)
 		ValidatorForm.removeValidationRule(this.ruleIsColorNameUnique)
 	}
-	handleDrawerOpen = () => this.setState({open: true})
-
-	handleDrawerClose = () => this.setState({open: false})
-
-	handleColorChangeComplete = color => this.setState({ color })
-
-	handleAddColor = () => this.setState(st => {
-		const newColor = { color: st.color, name: st.newColorName }
-
-		return {
-			newColorName: '',
-			prevColorName: st.color,
-			colors: [...st.colors, newColor]
-		}
-	})
-
-	handleChange = evt => this.setState({ newColorName: evt.target.value })
-
+	handleDrawerOpen = () => (
+		this.setState({ open: true })
+	)
+	handleDrawerClose = () => (
+		this.setState({ open: false })
+	)
+	handleHexChangeComplete = hex => (
+		this.setState({ newColorHex: hex })
+	)
+	handleAddColor = () => this.setState(st => ({
+		newColorName: '',
+		colors: [...st.colors, {
+			color: st.newColorHex,
+			name: st.newColorName
+		}]
+	}))
+	handleChange = evt => (
+		this.setState({ newColorName: evt.target.value })
+	)
 	addIsColorUniqueRule = () => {
 		ValidatorForm.addValidationRule(this.ruleIsColorUnique, () => {
 			if (!this.state.newColorName.length) return true
 
 			return this.state.colors.every(
-				({color}) => (color.toLowerCase() !== this.state.color.toLowerCase())
+				({color}) => (color.toLowerCase() !== this.state.newColorHex.toLowerCase())
 			)
 		})
-
 		return this
 	}
 	addIsColorNameUniqueRule = () => {
@@ -131,13 +131,20 @@ class NewPalette extends Component {
 				({name}) => (name.toLowerCase() !== value.toLowerCase())
 			)
 		})
-
 		return this
 	}
-
 	render() {
-		const { classes, theme } = this.props
-		const { open, color, newColorName, prevColorName, colors } = this.state
+		const {
+			classes,
+			theme
+		} = this.props
+
+		const {
+			open,
+			newColorHex,
+			newColorName,
+			colors
+		} = this.state
 
 		return (
 			<div className={classes.root}>
@@ -188,8 +195,8 @@ class NewPalette extends Component {
 						Random Color
 					</Button>
 					<ChromePicker
-						color={color || prevColorName}
-						onChangeComplete={newColor => this.handleColorChangeComplete(newColor.hex)}
+						color={newColorHex}
+						onChangeComplete={newColor => this.handleHexChangeComplete(newColor.hex)}
 					/>
 					<ValidatorForm
 						ref='form'
@@ -214,7 +221,7 @@ class NewPalette extends Component {
 							type='submit'
 							variant='contained'
 							color='primary'
-							style={{ backgroundColor: color || prevColorName }}
+							style={{ backgroundColor: newColorHex }}
 						>Add color
 						</Button>
 					</ValidatorForm>

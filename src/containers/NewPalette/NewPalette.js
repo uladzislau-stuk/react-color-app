@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import withStyles from "@material-ui/core/styles/withStyles"
-import { DraggableColorBox } from "../../components/pages/NewPalette"
+import { DraggableColorBox } from '../../components/pages/NewPalette'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import uuid from 'uuid/v4'
 import clsx from 'clsx'
 import Drawer from '@material-ui/core/Drawer'
@@ -77,22 +78,66 @@ const styles = theme => ({
 
 class NewPalette extends Component {
 	state = {
-		open: false,
-		color: 'purple',
-		colors: ['#7f547f', '#565656']
+		open: true,
+		color: '#315CA0',
+		newColorName: '',
+		prevColorName: '',
+		colors: []
 	}
+	ruleIsColorNameUnique = 'isColorNameUnique'
+	ruleIsColorUnique = 'isColorUnique'
 
+	componentDidMount() {
+		this.addIsColorUniqueRule().addIsColorNameUniqueRule()
+	}
+	componentWillUnmount() {
+		ValidatorForm.removeValidationRule(this.ruleIsColorUnique)
+		ValidatorForm.removeValidationRule(this.ruleIsColorNameUnique)
+	}
 	handleDrawerOpen = () => this.setState({open: true})
 
 	handleDrawerClose = () => this.setState({open: false})
 
 	handleColorChangeComplete = color => this.setState({ color })
 
-	handleAddColor = () => this.setState(st => ({ colors: [...st.colors, st.color] }))
+	handleAddColor = () => this.setState(st => {
+		const newColor = { color: st.color, name: st.newColorName }
+
+		return {
+			newColorName: '',
+			prevColorName: st.color,
+			colors: [...st.colors, newColor]
+		}
+	})
+
+	handleChange = evt => this.setState({ newColorName: evt.target.value })
+
+	addIsColorUniqueRule = () => {
+		ValidatorForm.addValidationRule(this.ruleIsColorUnique, () => {
+			if (!this.state.newColorName.length) return true
+
+			return this.state.colors.every(
+				({color}) => (color.toLowerCase() !== this.state.color.toLowerCase())
+			)
+		})
+
+		return this
+	}
+	addIsColorNameUniqueRule = () => {
+		ValidatorForm.addValidationRule(this.ruleIsColorNameUnique, value => {
+			if (!this.state.newColorName.length) return true
+
+			return this.state.colors.every(
+				({name}) => (name.toLowerCase() !== value.toLowerCase())
+			)
+		})
+
+		return this
+	}
 
 	render() {
 		const { classes, theme } = this.props
-		const { open, color, colors } = this.state
+		const { open, color, newColorName, prevColorName, colors } = this.state
 
 		return (
 			<div className={classes.root}>
@@ -143,16 +188,36 @@ class NewPalette extends Component {
 						Random Color
 					</Button>
 					<ChromePicker
-						color={color}
+						color={color || prevColorName}
 						onChangeComplete={newColor => this.handleColorChangeComplete(newColor.hex)}
 					/>
-					<Button
-						onClick={this.handleAddColor}
-						variant='contained'
-						color='primary'
-						style={{ backgroundColor: color }}
-					>Add color
-					</Button>
+					<ValidatorForm
+						ref='form'
+						onSubmit={this.handleAddColor}
+						onError={errors => console.log(errors)}
+					>
+						<TextValidator
+							value={newColorName}
+							onChange={this.handleChange}
+							validators={[
+								'required',
+								'isColorNameUnique',
+								'isColorUnique'
+							]}
+							errorMessages={[
+								'Enter color name',
+								'Color name must be unique',
+								'Color already exists'
+							]}
+						/>
+						<Button
+							type='submit'
+							variant='contained'
+							color='primary'
+							style={{ backgroundColor: color || prevColorName }}
+						>Add color
+						</Button>
+					</ValidatorForm>
 				</Drawer>
 				<main
 					className={clsx(classes.content, {
@@ -163,7 +228,8 @@ class NewPalette extends Component {
 					{colors.map(color => (
 						<DraggableColorBox
 							key={uuid()}
-							color={color}
+							color={color.color}
+							name={color.name}
 						/>
 					))}
 				</main>

@@ -1,69 +1,82 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import configureStore from '../../redux/store/configureStore.js';
+import React from 'react'
+import { connect } from 'react-redux'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import generatePalette from '../../helpers/colorHelper.js'
 
 import { ColorPalette, Home, NotFound, NewPalette } from '../'
-
-import palettes from '../../test/mockData.js'
+import { addPalette } from "../../redux/actions/palettes"
 
 import '../../utils/styles/global.scss'
 
-const store = configureStore();
+function App({ palettes, addPalette }) {
+	// return function () {
+	// 	return dispatch(actionCreator.apply(this, arguments));
+	// };
+	function findPalette(id) {
+		return palettes.find(palette => (
+			palette.id === id
+		))
+	}
 
-function App() {
-  const findPalette = id => (
-  	palettes.find(palette => (
-  		palette.id === id
-	))
-  )
+	function handleCreatePalette() {
+		console.log('CREATE')
+		// addPalette(newPalette)
+	}
 
-  return (
-      <Provider store={store}>
-          <Router>
-              <Switch>
-				  <Route
-					  exact
-					  path="/palette/new"
-					  render={() =>
-						  <NewPalette />
-					  }
-				  />
-				  <Route
-					  exact
-					  path="/"
-					  render={() =>
-						  <Home palettes={palettes} />
-					  }
-				  />
-                  <Route
-					  exact
-					  path="/"
-					  render={() =>
-						  <Home palettes={palettes} />
-					  }
-				  />
-                  <Route
-					  exact
-					  path="/palette/:id"
-					  render={routeProps => (
-						  <ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
-					  )}
-				  />
-				  <Route
-					  exact
-					  path="/palette/:id/:colorId"
-					  render={routeProps => (
-						  <ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
-					  )}
-				  />
-				  <Route render={NotFound} />
-              </Switch>
-          </Router>
-      </Provider>
-  );
+	return (
+		<Router>
+			<Switch>
+				<Route
+					exact
+					path="/palette/new"
+					render={() =>
+						<NewPalette createPalette={handleCreatePalette}/>
+					}
+				/>
+				<Route
+					exact
+					path="/"
+					render={() =>
+						<Home palettes={palettes}/>
+					}
+				/>
+				<Route
+					exact
+					path="/"
+					render={() =>
+						<Home palettes={palettes}/>
+					}
+				/>
+				<Route
+					exact
+					path="/palette/:id"
+					render={routeProps => (
+						<ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
+					)}
+				/>
+				<Route
+					exact
+					path="/palette/:id/:colorId"
+					render={routeProps => (
+						<ColorPalette {...generatePalette(findPalette(routeProps.match.params.id))} />
+					)}
+				/>
+				<Route render={NotFound}/>
+			</Switch>
+		</Router>
+	)
 }
 
-export default App;
+const mapStateToProps = state => ({
+	palettes: state.palettes.palettes
+})
+
+const mapDispatchToProps = {
+	addPalette
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(App)

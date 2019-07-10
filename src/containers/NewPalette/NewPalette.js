@@ -136,7 +136,8 @@ class NewPalette extends Component {
 	render() {
 		const {
 			classes,
-			theme
+			theme,
+			createPalette
 		} = this.props
 
 		const {
@@ -168,6 +169,13 @@ class NewPalette extends Component {
 						<Typography variant="h6" noWrap>
 							Persistent drawer
 						</Typography>
+
+						<Button
+							variant='contained'
+							color='secondary'
+							onClick={createPalette}>
+							Create Palette
+						</Button>
 					</Toolbar>
 				</AppBar>
 				<Drawer

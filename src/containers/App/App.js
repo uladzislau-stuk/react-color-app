@@ -19,9 +19,8 @@ function App({ palettes, addPalette }) {
 		))
 	}
 
-	function handleCreatePalette() {
-		console.log('CREATE')
-		// addPalette(newPalette)
+	function handleCreatePalette(newPalette) {
+		addPalette(newPalette)
 	}
 
 	return (

@@ -117,24 +117,9 @@ class NewPalette extends Component {
 			name: st.newColorName
 		}]
 	}))
-	// handleDeleteColor = name => this.setState(st => {
-	// 	// or filter much shorter
-	// 	const idx = st.colors.findIndex(color => color.name === name)
-	//
-	// 	return {colors: [
-	// 		...st.colors.slice(0, idx),
-	// 		...st.colors.slice(idx + 1)
-	// 	]}
-	// })
-	handleDeleteColor = name => {
-		// or filter much shorter
-		const idx = this.state.colors.findIndex(color => color.name === name)
-
-		this.setState(st => ({colors: [
-				...st.colors.slice(0, idx),
-				...st.colors.slice(idx + 1)
-				]}))
-	}
+	handleDeleteColor = (name) => this.setState(st => ({
+		colors: st.colors.filter(color => color.name !== name)
+	}))
 	clearPalette = () => this.setState({
 		colors: []
 	})
@@ -311,6 +296,7 @@ class NewPalette extends Component {
 						deleteColor={this.handleDeleteColor}
 						axis='xy'
 						onSortEnd={this.handleSortColorsEnd}
+						pressDelay={100}
 					/>
 				</main>
 			</div>

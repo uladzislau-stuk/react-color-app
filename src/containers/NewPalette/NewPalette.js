@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import withStyles from "@material-ui/core/styles/withStyles"
-import { DraggableColorBox } from '../../components/pages/NewPalette'
+import { DraggableColorList } from '../../components/pages/NewPalette'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import uuid from 'uuid/v4'
 import clsx from 'clsx'
 import Drawer from '@material-ui/core/Drawer'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -16,6 +15,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import Button from '@material-ui/core/Button'
 import { ChromePicker } from 'react-color'
+import { arrayMove } from "react-sortable-hoc"
 
 const drawerWidth = 400
 
@@ -119,6 +119,11 @@ class NewPalette extends Component {
 			...st.colors.slice(idx + 1)
 		]}
 	}})
+	handleSortColorsEnd = ({oldIndex, newIndex}) => {
+		this.setState(st => ({
+			colors: arrayMove(st.colors, oldIndex, newIndex),
+		}));
+	}
 	handleChange = evt => (
 		this.setState({ newColorName: evt.target.value })
 	)
@@ -249,14 +254,12 @@ class NewPalette extends Component {
 					})}
 				>
 					<div className={classes.drawerHeader} />
-					{colors.map(color => (
-						<DraggableColorBox
-							key={uuid()}
-							color={color.color}
-							name={color.name}
-							deleteColor={() => this.handleDeleteColor(color.name)}
-						/>
-					))}
+					<DraggableColorList
+						colors={colors}
+						deleteColor={this.handleDeleteColor}
+						axis='xy'
+						onSortEnd={this.handleSortColorsEnd}
+					/>
 				</main>
 			</div>
 		)

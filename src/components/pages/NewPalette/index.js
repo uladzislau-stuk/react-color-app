@@ -1,5 +1,7 @@
-import DraggableColorBox from "./DraggableColorBox/DraggableColorBox"
+import DraggableColorBox from './DraggableColorBox/DraggableColorBox'
+import DraggableColorList from './DraggableColorList/DraggableColorList'
 
 export {
- 	DraggableColorBox
+ 	DraggableColorBox,
+	DraggableColorList
 }

@@ -119,6 +119,9 @@ class NewPalette extends Component {
 			...st.colors.slice(idx + 1)
 		]}
 	}})
+	clearPalette = () => this.setState({
+		colors: []
+	})
 	handleSortColorsEnd = ({oldIndex, newIndex}) => {
 		this.setState(st => ({
 			colors: arrayMove(st.colors, oldIndex, newIndex),
@@ -183,12 +186,11 @@ class NewPalette extends Component {
 						<Typography variant="h6" noWrap>
 							Persistent drawer
 						</Typography>
-
 						<Button
 							variant='contained'
 							color='secondary'
 							onClick={createPalette}>
-							Create Palette
+							Save Palette
 						</Button>
 					</Toolbar>
 				</AppBar>
@@ -210,7 +212,10 @@ class NewPalette extends Component {
 					<Typography variant='h4'>
 						Design Your palette
 					</Typography>
-					<Button variant='contained' color='secondary'>
+					<Button
+						variant='contained'
+						color='secondary'
+						onClick={this.clearPalette}>
 						Clear Palette
 					</Button>
 					<Button variant='contained' color='primary'>

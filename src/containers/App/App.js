@@ -30,7 +30,10 @@ function App({ palettes, addPalette }) {
 					exact
 					path="/palette/new"
 					render={() =>
-						<NewPalette createPalette={handleCreatePalette}/>
+						<NewPalette
+							palettes={palettes}
+							createPalette={handleCreatePalette}
+						/>
 					}
 				/>
 				<Route
@@ -44,7 +47,7 @@ function App({ palettes, addPalette }) {
 					exact
 					path="/"
 					render={() =>
-						<Home palettes={palettes}/>
+						<Home palettes={palettes} />
 					}
 				/>
 				<Route

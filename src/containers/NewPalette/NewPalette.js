@@ -77,15 +77,22 @@ const styles = theme => ({
 })
 
 class NewPalette extends Component {
-	state = {
-		open: true,
-		newColorHex: '#315CA0',
-		newColorName: '',
-		colors: []
+	static defaultProps = {
+		maxColors: 20
 	}
+	constructor(props) {
+		super(props)
 
-	ruleIsColorNameUnique = 'isColorNameUnique'
-	ruleIsColorUnique = 'isColorUnique'
+		this.ruleIsColorNameUnique = 'isColorNameUnique'
+		this.ruleIsColorUnique = 'isColorUnique'
+
+		this.state = {
+			open: true,
+			newColorHex: '#315CA0',
+			newColorName: '',
+			colors: []
+		}
+	}
 
 	componentDidMount() {
 		this.addIsColorUniqueRule().addIsColorNameUniqueRule()
@@ -110,18 +117,41 @@ class NewPalette extends Component {
 			name: st.newColorName
 		}]
 	}))
-	handleDeleteColor = (name) => this.setState(st => {{
+	// handleDeleteColor = name => this.setState(st => {
+	// 	// or filter much shorter
+	// 	const idx = st.colors.findIndex(color => color.name === name)
+	//
+	// 	return {colors: [
+	// 		...st.colors.slice(0, idx),
+	// 		...st.colors.slice(idx + 1)
+	// 	]}
+	// })
+	handleDeleteColor = name => {
 		// or filter much shorter
-		const idx = st.colors.findIndex(color => color.name === name)
+		const idx = this.state.colors.findIndex(color => color.name === name)
 
-		return {colors: [
-			...st.colors.slice(0, idx),
-			...st.colors.slice(idx + 1)
-		]}
-	}})
+		this.setState(st => ({colors: [
+				...st.colors.slice(0, idx),
+				...st.colors.slice(idx + 1)
+				]}))
+	}
 	clearPalette = () => this.setState({
 		colors: []
 	})
+	addRandomColor = () => {
+		const allColors = this.props.palettes.map(palette => palette.colors).flat()
+
+		if (!allColors.length ) return
+
+		let randomNum = Math.round(Math.random() * allColors.length)
+
+		this.setState(st => ({
+			colors: [
+				...st.colors,
+				allColors[randomNum]
+			]
+		}))
+	}
 	handleSortColorsEnd = ({oldIndex, newIndex}) => {
 		this.setState(st => ({
 			colors: arrayMove(st.colors, oldIndex, newIndex),
@@ -150,11 +180,13 @@ class NewPalette extends Component {
 		})
 		return this
 	}
+
 	render() {
 		const {
 			classes,
 			theme,
-			createPalette
+			createPalette,
+			maxColors
 		} = this.props
 
 		const {
@@ -163,6 +195,8 @@ class NewPalette extends Component {
 			newColorName,
 			colors
 		} = this.state
+
+		const isPaletteFull = maxColors <= colors.length
 
 		return (
 			<div className={classes.root}>
@@ -218,7 +252,11 @@ class NewPalette extends Component {
 						onClick={this.clearPalette}>
 						Clear Palette
 					</Button>
-					<Button variant='contained' color='primary'>
+					<Button
+						variant='contained'
+						color='primary'
+						onClick={this.addRandomColor}
+						disabled={isPaletteFull}>
 						Random Color
 					</Button>
 					<ChromePicker
@@ -248,8 +286,17 @@ class NewPalette extends Component {
 							type='submit'
 							variant='contained'
 							color='primary'
-							style={{ backgroundColor: newColorHex }}
-						>Add color
+							style={{
+								backgroundColor: isPaletteFull
+									? "grey"
+									: newColorHex
+							}}
+							disabled={isPaletteFull}
+						>
+							{isPaletteFull
+								? "Palette Full"
+								: "Add color"
+							}
 						</Button>
 					</ValidatorForm>
 				</Drawer>

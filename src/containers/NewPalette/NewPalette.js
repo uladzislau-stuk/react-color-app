@@ -110,6 +110,15 @@ class NewPalette extends Component {
 			name: st.newColorName
 		}]
 	}))
+	handleDeleteColor = (name) => this.setState(st => {{
+		// or filter much shorter
+		const idx = st.colors.findIndex(color => color.name === name)
+
+		return {colors: [
+			...st.colors.slice(0, idx),
+			...st.colors.slice(idx + 1)
+		]}
+	}})
 	handleChange = evt => (
 		this.setState({ newColorName: evt.target.value })
 	)
@@ -245,6 +254,7 @@ class NewPalette extends Component {
 							key={uuid()}
 							color={color.color}
 							name={color.name}
+							deleteColor={() => this.handleDeleteColor(color.name)}
 						/>
 					))}
 				</main>

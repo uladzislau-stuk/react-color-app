@@ -15,7 +15,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import Button from '@material-ui/core/Button'
 import { ChromePicker } from 'react-color'
-import { arrayMove } from "react-sortable-hoc"
+import arrayMove  from 'array-move'
 
 const drawerWidth = 400
 

@@ -36,7 +36,7 @@ const styles = {
 
 class Home extends Component {
 	render() {
-		const { classes } = this.props
+		const { classes, palettes } = this.props
 
 		return (
 			<div className={classes.root}>
@@ -45,7 +45,7 @@ class Home extends Component {
 						<h1>React Colors</h1>
 						<Link to='/palette/new'>Create Palette</Link>
 					</nav>
-					<PaletteList {...this.props} />
+					<PaletteList palettes={palettes} />
 				</div>
 			</div>
 		)

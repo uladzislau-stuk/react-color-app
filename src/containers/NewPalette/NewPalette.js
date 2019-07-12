@@ -1,84 +1,61 @@
 import React, {Component} from 'react'
-import withStyles from "@material-ui/core/styles/withStyles"
-import { DraggableColorList } from '../../components/pages/NewPalette'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import clsx from 'clsx'
-import Drawer from '@material-ui/core/Drawer'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
+import { withTheme } from '@material-ui/styles'
+import styled, { css } from 'styled-components'
+import { DraggableColorList, PaletteFormNav } from '../../components/pages/NewPalette'
+import { Drawer, Typography, Divider, IconButton, Button }  from '@material-ui/core'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import Button from '@material-ui/core/Button'
 import { ChromePicker } from 'react-color'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import arrayMove  from 'array-move'
 
-const drawerWidth = 400
+const StyledRoot = styled.div`
+	display: flex
+`
 
-const styles = theme => ({
-	root: {
-		display: 'flex',
-	},
-	appBar: {
-		transition: theme.transitions.create(['margin', 'width'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-	},
-	appBarShift: {
-		width: `calc(100% - ${drawerWidth}px)`,
-		marginLeft: drawerWidth,
-		transition: theme.transitions.create(['margin', 'width'], {
-			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	menuButton: {
-		marginRight: theme.spacing(2),
-	},
-	hide: {
-		display: 'none',
-	},
-	drawer: {
-		width: drawerWidth,
-		flexShrink: 0,
-	},
-	drawerPaper: {
-		width: drawerWidth,
-	},
-	drawerHeader: {
-		display: 'flex',
-		alignItems: 'center',
-		padding: '0 8px',
-		...theme.mixins.toolbar,
-		justifyContent: 'flex-end',
-	},
-	content: {
-		flexGrow: 1,
-		height: "calc(100vh - 64px)",
-		padding: theme.spacing(3),
-		transition: theme.transitions.create('margin', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-		marginLeft: -drawerWidth,
-	},
-	contentShift: {
-		transition: theme.transitions.create('margin', {
-			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-		marginLeft: 0,
-	},
-})
+const StyledDrawer = styled(({ drawerWidth, ...other }) => (
+	<Drawer {...other} classes={{ paper: 'paper' }} />
+))`
+	width: ${props => props.drawerWidth}px;
+	flex-shrink: 0;
+	
+	& .paper {
+		width: ${props => props.drawerWidth}px;
+	}
+`
+
+const StyledDrawerHeader = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 0 8px;
+	${props => props.theme.mixins.toolbar};
+`
+
+const StyledContent = styled.main`
+	flex-grow: 1;
+	height: calc(100vh - 64px);
+	padding: ${props => props.theme.spacing(3)};
+	margin-left: ${props => -props.drawerWidth}px;
+	transition: ${props => props.theme.transitions.create('margin', {
+		easing: props.theme.transitions.easing.sharp,
+		duration: props.theme.transitions.duration.leavingScreen
+	})};
+	${props => props.open &&
+		css`
+		transition: ${props => props.theme.transitions.create('margin', {
+			easing: props.theme.transitions.easing.easeOut,
+			duration: props.theme.transitions.duration.enteringScreen
+		})};
+		margin-left: 0;
+		`
+	}
+`
 
 class NewPalette extends Component {
 	static defaultProps = {
-		maxColors: 20
+		maxColors: 20,
+		drawerWidth: 400
 	}
 	constructor(props) {
 		super(props)
@@ -93,7 +70,6 @@ class NewPalette extends Component {
 			colors: []
 		}
 	}
-
 	componentDidMount() {
 		this.addIsColorUniqueRule().addIsColorNameUniqueRule()
 	}
@@ -168,10 +144,9 @@ class NewPalette extends Component {
 
 	render() {
 		const {
-			classes,
 			theme,
 			createPalette,
-			maxColors
+			maxColors, drawerWidth
 		} = this.props
 
 		const {
@@ -184,49 +159,29 @@ class NewPalette extends Component {
 		const isPaletteFull = maxColors <= colors.length
 
 		return (
-			<div className={classes.root}>
-				<CssBaseline />
-				<AppBar
-					position="fixed"
-					className={clsx(classes.appBar, {
-						[classes.appBarShift]: open,
+			<StyledRoot>
+				<PaletteFormNav
+					open={open}
+					theme={theme}
+					drawerWidth={drawerWidth}
+					drawerOpen={this.handleDrawerOpen}
+					createPalette={() => createPalette({
+						paletteName: 'Test Palette',
+						id: 'test-palette',
+						emoji: '',
+						colors
 					})}
-				>
-					<Toolbar>
-						<IconButton
-							color="inherit"
-							aria-label="Open drawer"
-							onClick={this.handleDrawerOpen}
-							edge="start"
-							className={clsx(classes.menuButton, open && classes.hide)}
-						>
-							<MenuIcon />
-						</IconButton>
-						<Typography variant="h6" noWrap>
-							Persistent drawer
-						</Typography>
-						<Button
-							variant='contained'
-							color='secondary'
-							onClick={createPalette}>
-							Save Palette
-						</Button>
-					</Toolbar>
-				</AppBar>
-				<Drawer
-					className={classes.drawer}
+				/>
+				<StyledDrawer
+					drawerWidth={drawerWidth}
 					variant="persistent"
 					anchor="left"
-					open={open}
-					classes={{
-						paper: classes.drawerPaper,
-					}}
-				>
-					<div className={classes.drawerHeader}>
+					open={open}>
+					<StyledDrawerHeader theme={theme}>
 						<IconButton onClick={this.handleDrawerClose}>
 							{theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
 						</IconButton>
-					</div>
+					</StyledDrawerHeader>
 					<Divider />
 					<Typography variant='h4'>
 						Design Your palette
@@ -284,13 +239,13 @@ class NewPalette extends Component {
 							}
 						</Button>
 					</ValidatorForm>
-				</Drawer>
-				<main
-					className={clsx(classes.content, {
-						[classes.contentShift]: open,
-					})}
+				</StyledDrawer>
+				<StyledContent
+					theme={theme}
+					drawerWidth={drawerWidth}
+					open={open}
 				>
-					<div className={classes.drawerHeader} />
+					<StyledDrawerHeader theme={theme}/>
 					<DraggableColorList
 						colors={colors}
 						deleteColor={this.handleDeleteColor}
@@ -298,10 +253,10 @@ class NewPalette extends Component {
 						onSortEnd={this.handleSortColorsEnd}
 						pressDelay={100}
 					/>
-				</main>
-			</div>
+				</StyledContent>
+			</StyledRoot>
 		)
 	}
 }
 
-export default withStyles(styles, {withTheme: true})(NewPalette)
+export default withTheme(NewPalette)

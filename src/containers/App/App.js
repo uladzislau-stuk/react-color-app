@@ -1,12 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-
 import generatePalette from '../../helpers/colorHelper.js'
-
 import { ColorPalette, Home, NotFound, NewPalette } from '../'
-import { addPalette } from "../../redux/actions/palettes"
 
+import { addPalette } from "../../redux/actions/palettes"
 import '../../utils/styles/global.scss'
 
 function App({ palettes, addPalette }) {
